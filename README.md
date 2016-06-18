@@ -1,5 +1,7 @@
 # Serverspec [![Gem Version](https://badge.fury.io/rb/serverspec.svg)](http://badge.fury.io/rb/serverspec) [![BuildStatus](https://secure.travis-ci.org/mizzy/serverspec.svg)](http://travis-ci.org/mizzy/serverspec) [![wercker status](https://app.wercker.com/status/526d1ff4df6eadaa793dca1affcaed35/s/ "wercker status")](https://app.wercker.com/project/bykey/526d1ff4df6eadaa793dca1affcaed35)
 
+[![Join the chat at https://gitter.im/ihassin/serverspec](https://badges.gitter.im/ihassin/serverspec.svg)](https://gitter.im/ihassin/serverspec?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 RSpec tests for your servers configured by Puppet, Chef or anything else
 
 You can see the details of serverspec on [serverspec.org](http://serverspec.org/).
