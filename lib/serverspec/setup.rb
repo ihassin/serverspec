@@ -4,14 +4,14 @@ require 'erb'
 
 module Serverspec
   class Setup
-    def self.run
+    def self.run params
 
-      ask_os_type
+      @os_type = ask_os_type params
 
       if @os_type == 'UN*X'
-        ask_unix_backend
+        @backend_type = ask_unix_backend params
       else
-        ask_windows_backend
+        @backend_type = ask_windows_backend params
       end
 
       if @backend_type == 'ssh'
@@ -46,7 +46,14 @@ module Serverspec
       safe_create_dotrspec '.rspec'
     end
 
-    def self.ask_os_type
+    def self.ask_os_type params
+
+      os_flag = params.index('-os')
+      if os_flag != nil
+        return 'UN*X' if params[os_flag + 1].downcase == 'unix'
+        return 'Windows' if params[os_flag + 1].downcase == 'windows'
+      end
+
       prompt = <<-EOF
 Select OS type:
 
@@ -60,10 +67,16 @@ EOF
       num = $stdin.gets.to_i - 1
       puts
 
-      @os_type = ['UN*X', 'Windows'][num] || 'UN*X'
+      ['UN*X', 'Windows'][num] || 'UN*X'
     end
 
-    def self.ask_unix_backend
+    def self.ask_unix_backend params
+      backend_flag = params.index('-be')
+      if backend_flag != nil
+        return 'ssh' if params[backend_flag + 1].downcase == 'ssh'
+        return 'exec' if params[backend_flag + 1].downcase == 'exec'
+      end
+
       prompt = <<-EOF
 Select a backend type:
 
@@ -76,10 +89,16 @@ EOF
       num = $stdin.gets.to_i - 1
       puts
 
-      @backend_type = ['ssh', 'exec'][num] || 'exec'
+      ['ssh', 'exec'][num] || 'exec'
     end
 
-    def self.ask_windows_backend
+    def self.ask_windows_backend params
+      backend_flag = params.index('-be')
+      if backend_flag != nil
+        return 'winrm' if params[backend_flag + 1].downcase == 'winrm'
+        return 'cmd' if params[backend_flag + 1].downcase == 'cmd'
+      end
+
       prompt = <<-EOF
 Select a backend type:
 
@@ -92,7 +111,7 @@ EOF
       num = $stdin.gets.to_i - 1
       puts
 
-      @backend_type = ['winrm', 'cmd'][num] || 'exec'
+      ['winrm', 'cmd'][num] || 'cmd'
     end
 
     def self.safe_create_spec target
